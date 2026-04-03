@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+  /* Basic bubble styling */
+  .bubble {
+    position: absolute;
+    bottom: -100px;
+    background: rgba(173, 216, 230, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  @keyframes float {
+    to {
+      transform: translateY(calc(-100vh - 100px));
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<script>
+function createBubble() {
+  const bubble = document.createElement('div');
+  const size = Math.random() * 60 + 20 + 'px';
+  const duration = Math.random() * 3 + 2; // Random duration between 2-5s
+
+  // Set visual properties
+  bubble.className = 'bubble';
+  bubble.style.left = Math.random() * 100 + 'vw';
+  bubble.style.width = size;
+  bubble.style.height = size;
+  
+  // Apply animation
+  bubble.style.animation = `float ${duration}s linear forwards`;
+
+  document.body.appendChild(bubble);
+
+  // Remove element after animation finishes
+  setTimeout(() => {
+    bubble.remove();
+  }, duration * 1000);
+}
+
+// Generate a bubble every 500ms
+setInterval(createBubble, 500);
+</script>
+</body>
+<head>
+<meta charset="UTF-8">
+<title>Din Don Dan~✨</title>
+
+<style>
+/* RESET + FONT */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+ background: linear-gradient(180deg, #ff7ad9, #b347ff); 
+font-family: Roboto, sans-serif;
+overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+@font-face {
+  font-family: Roboto;
+  src: url("https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxM.woff2");
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* OUTER CONTAINER */
+.captcha-container {
+  border: 0px;
+  padding: 6px;
+  max-width: 460px;
+  margin-top: 30px;
+  
+}
+
+/* GAME BOX — EXACT 466×466 */
+.game {
+  position: relative;
+  width: 466px;
+  height: 466px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* BACKGROUND VIDEO */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fits inside 466x466 */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* OVERLAY GRADIENT */
+.overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.25), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.85));
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* BUBBLES */
+.bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.bubble {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0, #ffbdfc 40%, transparent 70%);
+  opacity: 0.5;
+  animation: floatUp 6s linear infinite;
+}
+@keyframes floatUp {
+  from { transform: translateY(100%); opacity: 0; }
+  20% { opacity: 0.7; }
+  to { transform: translateY(-120%); opacity: 0; }
+}
+
+/* HUD */
+.hud {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+  z-index: 3;
+}
+.hud .label { opacity: 0.8; }
+.hud .value { font-weight: 700; }
+
+/* BOTTOM ARROWS — EXACT SIZE 101.5×45 */
+.arrows-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 430px; /* ← original width for 4×101.5px arrows */
+  display: flex;
+  justify-content: space-between;
+  z-index: 3;
+}
+
+.arrow-key {
+  width: 101.5px;
+  height: 45px;
+  font-size: 20px;
+  border-radius: 5px;
+  background: rgba(145,56,145,.3);
+  border: 1px solid #fff;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 10px #913891;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.1s;
+}
+.arrow-key.active {
+  background: rgba(200,90,200,.6);
+  box-shadow:
+    0 0 10px rgba(255,200,255,0.9),
+    0 0 20px rgba(255,150,255,0.8);
+  transform: scale(0.95);
+}
+
+/* FALLING NOTES — EXACT SAME SIZE */
+.note {
+  position: absolute;
+  width: 101.5px;
+  height: 45px;
+  font-size: 20px;
+  border-radius: 5px;
+  
+
+  /* transparent interior */
+  background: rgba(255,255,255,0);
+
+  /* glowing outline */
+  border: 2px solid rgba(255,210,255,0.9);
+  box-shadow:
+    0 0 8px rgba(255,200,255,0.9),
+    0 0 14px rgba(145,56,145,0.9);
+
+  backdrop-filter: blur(3px);
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 0 10px #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: fallSlow 3.2s linear forwards;
+  z-index: 3;
+}
+@keyframes fallSlow {
+  from { top: -80px; }
+  to { top: 110%; }
+}
+
+/* POP BIGGER */
+.note-pop {
+  animation: notePop 0.22s ease-out forwards;
+}
+@keyframes notePop {
+  0%   { transform: scale(1);     opacity: 1; }
+  40%  { transform: scale(1.25);  opacity: 1; }
+  100% { transform: scale(1.55) translateY(-8px); opacity: 0; }
+}
+
+/* SPARKLES */
+.sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #ffe6ff 40%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: sparklePop 0.45s ease-out forwards;
+  z-index: 4;
+}
+@keyframes sparklePop {
+  0% { transform: scale(0.3); opacity: 1; }
+  60% { transform: scale(1.4); opacity: 0.9; }
+  100% { transform: scale(1.8) translateY(-6px); opacity: 0; }
+}
+
+/* STATS BOX */
+.stats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px 30px;
+  border-radius: 10px;
+
+  background: rgba(201,71,171,.6);
+  border: 1px solid hsla(0,0%,100%,.65);
+  box-shadow:
+    0 0 5px hsla(0,0%,100%,.5),
+    0 0 10px rgba(145,56,145,.8);
+
+  backdrop-filter: blur(10px);
+  color: #fff;
+  z-index: 10;
+  display: none;
+}
+
+/* BLUE-GLOW TEXT */
+.stats-title,
+.stats-item {
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 10px #2196da;
+}
+.stats-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.stats-item {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+/* TRY AGAIN BUTTON */
+.stats-btn {
+  background: hsla(0,0%,100%,.2);
+  border: 1px solid hsla(0,0%,100%,.65);
+  border-radius: 5px;
+  box-shadow:
+    0 0 5px hsla(0,0%,100%,.5),
+    0 0 10px rgba(145,56,145,.8);
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 20px;
+  padding: 10px 20px;
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="captcha-container">
+  <div class="game" id="gameRoot">
+
+    <video src="https://captcha.neal.fun/dance.mp4"
+           class="bg-video"
+           playsinline
+           preload="auto"
+           loop
+           autoplay
+           id="bgVideo"></video>
+
+    <div class="overlay-gradient"></div>
+    <div class="bubbles"></div>
+
+    <div class="hud">
+      <div><span class="label">Hit:</span> <span class="value" id="hitCount">0</span></div>
+      <div><span class="label">Miss:</span> <span class="value" id="missCount">0</span></div>
+      <div><span class="label">Accuracy:</span> <span class="value" id="accuracyText">100%</span></div>
+    </div>
+
+    <div class="arrows-container" id="arrowsContainer">
+      <div class="arrow-key">←</div>
+      <div class="arrow-key">↓</div>
+      <div class="arrow-key">↑</div>
+      <div class="arrow-key">→</div>
+    </div>
+
+    <div class="stats" id="statsBox">
+      <div class="stats-title">STAGE COMPLETED</div>
+      <div class="stats-item">Hit Notes: <span id="statsHit">0</span></div>
+      <div class="stats-item">Missed Notes: <span id="statsMiss">0</span></div>
+      <div class="stats-item">Accuracy: <span id="statsAccuracy">0%</span></div>
+      <button class="stats-btn" id="restartBtn">Try Again</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  
+  
+  //_______________________________________________________________
+            const realChart = [{
+            key: "down",
+            time: 1.55
+        }, {
+            key: "down",
+            time: 2.2
+        }, {
+            key: "left",
+            time: 2.625
+        }, {
+            key: "left",
+            time: 2.825
+        }, {
+            key: "right",
+            time: 3.025
+        }, {
+            key: "up",
+            time: 3.275
+        }, {
+            key: "up",
+            time: 3.6
+        }, {
+            key: "up",
+            time: 3.925
+        }, {
+            key: "down",
+            time: 5
+        }, {
+            key: "down",
+            time: 5.325
+        }, {
+            key: "down",
+            time: 5.65
+        }, {
+            key: "right",
+            time: 6.1
+        }, {
+            key: "right",
+            time: 6.3
+        }, {
+            key: "left",
+            time: 6.5
+        }, {
+            key: "down",
+            time: 6.75
+        }, {
+            key: "down",
+            time: 7.075
+        }, {
+            key: "down",
+            time: 7.4
+        }, {
+            key: "left",
+            time: 8.4
+        }, {
+            key: "left",
+            time: 8.725
+        }, {
+            key: "left",
+            time: 9.05
+        }, {
+            key: "up",
+            time: 9.5
+        }, {
+            key: "up",
+            time: 9.725
+        }, {
+            key: "down",
+            time: 9.925
+        }, {
+            key: "right",
+            time: 10.15
+        }, {
+            key: "right",
+            time: 10.475
+        }, {
+            key: "right",
+            time: 10.8
+        }, {
+            key: "up",
+            time: 11.85
+        }, {
+            key: "up",
+            time: 12.175
+        }, {
+            key: "up",
+            time: 12.5
+        }, {
+            key: "down",
+            time: 12.95
+        }, {
+            key: "down",
+            time: 13.15
+        }, {
+            key: "up",
+            time: 13.35
+        }, {
+            key: "right",
+            time: 13.55
+        }, {
+            key: "right",
+            time: 13.9
+        }, {
+            key: "right",
+            time: 14.25
+        }, {
+            key: "down",
+            time: 14.65
+        }, {
+            key: "down",
+            time: 14.875
+        }, {
+            key: "down",
+            time: 15.1
+        }, {
+            key: "left",
+            time: 15.25
+        }, {
+            key: "right",
+            time: 15.25
+        }, {
+            key: "left",
+            time: 16.55
+        }, {
+            key: "right",
+            time: 16.725
+        }, {
+            key: "left",
+            time: 17
+        }, {
+            key: "right",
+            time: 17
+        }, {
+            key: "up",
+            time: 17.425
+        }, {
+            key: "left",
+            time: 17.85
+        }, {
+            key: "right",
+            time: 18.075
+        }, {
+            key: "up",
+            time: 18.25
+        }, {
+            key: "left",
+            time: 18.7
+        }, {
+            key: "right",
+            time: 19.05
+        }, {
+            key: "up",
+            time: 19.375
+        }, {
+            key: "up",
+            time: 19.55
+        }, {
+            key: "right",
+            time: 19.975
+        }, {
+            key: "left",
+            time: 20.225
+        }, {
+            key: "left",
+            time: 20.4
+        }, {
+            key: "right",
+            time: 20.4
+        }, {
+            key: "down",
+            time: 20.825
+        }, {
+            key: "right",
+            time: 21.25
+        }, {
+            key: "left",
+            time: 21.475
+        }, {
+            key: "right",
+            time: 21.7
+        }, {
+            key: "down",
+            time: 22.975
+        }, {
+            key: "up",
+            time: 23.45
+        }, {
+            key: "up",
+            time: 23.65
+        }, {
+            key: "left",
+            time: 23.825
+        }, {
+            key: "right",
+            time: 23.825
+        }, {
+            key: "left",
+            time: 24.275
+        }, {
+            key: "up",
+            time: 24.7
+        }, {
+            key: "down",
+            time: 24.925
+        }, {
+            key: "left",
+            time: 25.15
+        }, {
+            key: "up",
+            time: 25.575
+        }, {
+            key: "down",
+            time: 26.025
+        }, {
+            key: "up",
+            time: 26.4
+        }, {
+            key: "down",
+            time: 26.85
+        }, {
+            key: "left",
+            time: 27.275
+        }, {
+            key: "right",
+            time: 27.275
+        }, {
+            key: "right",
+            time: 27.7
+        }, {
+            key: "up",
+            time: 28.125
+        }, {
+            key: "down",
+            time: 28.35
+        }, {
+            key: "right",
+            time: 28.575
+        }, {
+            key: "left",
+            time: 29.225
+        }, {
+            key: "right",
+            time: 29.65
+        }, {
+            key: "left",
+            time: 29.85
+        }, {
+            key: "up",
+            time: 30.25
+        }, {
+            key: "down",
+            time: 30.475
+        }, {
+            key: "down",
+            time: 30.7
+        }, {
+            key: "up",
+            time: 30.7
+        }, {
+            key: "up",
+            time: 31.125
+        }, {
+            key: "down",
+            time: 31.55
+        }, {
+            key: "down",
+            time: 31.775
+        }, {
+            key: "down",
+            time: 32
+        }, {
+            key: "left",
+            time: 32.4
+        }, {
+            key: "right",
+            time: 32.65
+        }, {
+            key: "left",
+            time: 32.875
+        }, {
+            key: "right",
+            time: 33.075
+        }, {
+            key: "up",
+            time: 33.275
+        }, {
+            key: "down",
+            time: 34.15
+        }, {
+            key: "up",
+            time: 34.15
+        }, {
+            key: "down",
+            time: 34.475
+        }, {
+            key: "up",
+            time: 35
+        }, {
+            key: "up",
+            time: 35.225
+        }, {
+            key: "up",
+            time: 35.45
+        }, {
+            key: "left",
+            time: 36.075
+        }, {
+            key: "right",
+            time: 36.5
+        }, {
+            key: "right",
+            time: 36.7
+        }, {
+            key: "left",
+            time: 37.05
+        }, {
+            key: "right",
+            time: 37.375
+        }, {
+            key: "down",
+            time: 37.55
+        }, {
+            key: "up",
+            time: 37.55
+        }, {
+            key: "up",
+            time: 37.9
+        }, {
+            key: "up",
+            time: 38.225
+        }, {
+            key: "down",
+            time: 38.45
+        }, {
+            key: "up",
+            time: 38.6
+        }, {
+            key: "down",
+            time: 38.85
+        }, {
+            key: "left",
+            time: 39.275
+        }, {
+            key: "right",
+            time: 39.625
+        }, {
+            key: "left",
+            time: 40.125
+        }, {
+            key: "right",
+            time: 40.575
+        }, {
+            key: "down",
+            time: 40.975
+        }, {
+            key: "up",
+            time: 40.975
+        }, {
+            key: "down",
+            time: 41.425
+        }, {
+            key: "up",
+            time: 41.875
+        }, {
+            key: "up",
+            time: 42.075
+        }, {
+            key: "up",
+            time: 42.3
+        }, {
+            key: "down",
+            time: 42.7
+        }, {
+            key: "left",
+            time: 42.95
+        }, {
+            key: "left",
+            time: 43.125
+        }, {
+            key: "left",
+            time: 43.325
+        }, {
+            key: "left",
+            time: 43.55
+        }, {
+            key: "down",
+            time: 43.9
+        }, {
+            key: "right",
+            time: 44.4
+        }, {
+            key: "down",
+            time: 44.4
+        }, {
+            key: "up",
+            time: 44.825
+        }, {
+            key: "down",
+            time: 45.25
+        }, {
+            key: "up",
+            time: 45.7
+        }, {
+            key: "left",
+            time: 46.125
+        }, {
+            key: "down",
+            time: 46.125
+        }, {
+            key: "up",
+            time: 46.55
+        }, {
+            key: "down",
+            time: 46.975
+        }, {
+            key: "up",
+            time: 47.425
+        }, {
+            key: "up",
+            time: 47.85
+        }, {
+            key: "down",
+            time: 47.85
+        }, {
+            key: "left",
+            time: 48.275
+        }, {
+            key: "right",
+            time: 48.7
+        }, {
+            key: "left",
+            time: 49.15
+        }, {
+            key: "up",
+            time: 49.575
+        }, {
+            key: "down",
+            time: 49.575
+        }, {
+            key: "right",
+            time: 50
+        }, {
+            key: "left",
+            time: 50.425
+        }, {
+            key: "right",
+            time: 50.85
+        }, {
+            key: "right",
+            time: 51.275
+        }, {
+            key: "down",
+            time: 51.275
+        }, {
+            key: "left",
+            time: 51.7
+        }, {
+            key: "up",
+            time: 52.125
+        }, {
+            key: "left",
+            time: 52.55
+        }, {
+            key: "left",
+            time: 53
+        }, {
+            key: "down",
+            time: 53
+        }, {
+            key: "right",
+            time: 53.425
+        }, {
+            key: "down",
+            time: 53.85
+        }, {
+            key: "right",
+            time: 54.275
+        }, {
+            key: "left",
+            time: 54.7
+        }, {
+            key: "up",
+            time: 54.7
+        }, {
+            key: "left",
+            time: 55.125
+        }, {
+            key: "right",
+            time: 55.55
+        }, {
+            key: "left",
+            time: 56
+        }, {
+            key: "right",
+            time: 56.425
+        }, {
+            key: "up",
+            time: 56.425
+        }, {
+            key: "down",
+            time: 56.9
+        }, {
+            key: "down",
+            time: 57.325
+        }, {
+            key: "down",
+            time: 57.725
+        }, {
+            key: "up",
+            time: 58.25
+        }, {
+            key: "left",
+            time: 58.65
+        }, {
+            key: "right",
+            time: 59
+        }, {
+            key: "left",
+            time: 59.2
+        }, {
+            key: "right",
+            time: 59.425
+        }, {
+            key: "up",
+            time: 59.65
+        }, {
+            key: "up",
+            time: 59.85
+        }, {
+            key: "up",
+            time: 60.2
+        }, {
+            key: "up",
+            time: 60.45
+        }, {
+            key: "down",
+            time: 60.45
+        }, {
+            key: "up",
+            time: 60.75
+        }, {
+            key: "down",
+            time: 60.75
+        }, {
+            key: "up",
+            time: 61.05
+        }, {
+            key: "down",
+            time: 61.05
+        }, {
+            key: "up",
+            time: 61.35
+        }, {
+            key: "down",
+            time: 61.35
+        }, {
+            key: "down",
+            time: 61.575
+        }, {
+            key: "left",
+            time: 61.975
+        }, {
+            key: "right",
+            time: 62.425
+        }, {
+            key: "left",
+            time: 62.625
+        }, {
+            key: "right",
+            time: 62.85
+        }, {
+            key: "down",
+            time: 63.075
+        }, {
+            key: "down",
+            time: 63.275
+        }, {
+            key: "down",
+            time: 63.6
+        }, {
+            key: "left",
+            time: 63.925
+        }, {
+            key: "right",
+            time: 63.925
+        }, {
+            key: "left",
+            time: 64.225
+        }, {
+            key: "right",
+            time: 64.225
+        }, {
+            key: "left",
+            time: 64.525
+        }, {
+            key: "right",
+            time: 64.525
+        }, {
+            key: "left",
+            time: 64.825
+        }, {
+            key: "right",
+            time: 64.825
+        }, {
+            key: "up",
+            time: 65
+        }, {
+            key: "left",
+            time: 65.425
+        }, {
+            key: "right",
+            time: 65.85
+        }, {
+            key: "left",
+            time: 66.05
+        }, {
+            key: "right",
+            time: 66.275
+        }, {
+            key: "up",
+            time: 66.5
+        }, {
+            key: "up",
+            time: 66.7
+        }, {
+            key: "up",
+            time: 67.025
+        }, {
+            key: "up",
+            time: 67.35
+        }, {
+            key: "left",
+            time: 67.35
+        }, {
+            key: "up",
+            time: 67.65
+        }, {
+            key: "left",
+            time: 67.65
+        }, {
+            key: "up",
+            time: 67.95
+        }, {
+            key: "left",
+            time: 67.95
+        }, {
+            key: "up",
+            time: 68.25
+        }, {
+            key: "left",
+            time: 68.25
+        }, {
+            key: "down",
+            time: 68.425
+        }, {
+            key: "left",
+            time: 68.85
+        }, {
+            key: "right",
+            time: 69.275
+        }, {
+            key: "left",
+            time: 69.45
+        }, {
+            key: "right",
+            time: 69.7
+        }, {
+            key: "down",
+            time: 69.925
+        }, {
+            key: "down",
+            time: 70.125
+        }, {
+            key: "right",
+            time: 70.125
+        }, {
+            key: "up",
+            time: 70.425
+        }, {
+            key: "left",
+            time: 70.425
+        }, {
+            key: "left",
+            time: 70.775
+        }, {
+            key: "right",
+            time: 70.775
+        }, {
+            key: "up",
+            time: 71.425
+        }, {
+            key: "down",
+            time: 71.425
+        }, {
+            key: "left",
+            time: 71.65
+        }, {
+            key: "right",
+            time: 71.65
+        }, {
+            key: "up",
+            time: 71.875
+        }, {
+            key: "down",
+            time: 71.875
+        }, {
+            key: "down",
+            time: 72.175
+        }, {
+            key: "down",
+            time: 72.5
+        }, {
+            key: "down",
+            time: 73.1
+        }, {
+            key: "up",
+            time: 73.325
+        }, {
+            key: "left",
+            time: 73.575
+        }, {
+            key: "right",
+            time: 73.575
+        }, {
+            key: "down",
+            time: 74
+        }, {
+            key: "right",
+            time: 74.425
+        }, {
+            key: "left",
+            time: 74.65
+        }, {
+            key: "down",
+            time: 74.875
+        }, {
+            key: "up",
+            time: 75.275
+        }, {
+            key: "right",
+            time: 75.725
+        }, {
+            key: "down",
+            time: 76.15
+        }, {
+            key: "left",
+            time: 76.475
+        }, {
+            key: "right",
+            time: 76.75
+        }, {
+            key: "up",
+            time: 77
+        }, {
+            key: "down",
+            time: 77.425
+        }, {
+            key: "right",
+            time: 77.85
+        }, {
+            key: "left",
+            time: 77.075
+        }, {
+            key: "down",
+            time: 78.3
+        }, {
+            key: "up",
+            time: 78.725
+        }, {
+            key: "up",
+            time: 78.925
+        }, {
+            key: "up",
+            time: 79.35
+        }, {
+            key: "left",
+            time: 79.65
+        }, {
+            key: "down",
+            time: 80
+        }, {
+            key: "up",
+            time: 80.425
+        }, {
+            key: "down",
+            time: 80.85
+        }, {
+            key: "right",
+            time: 81.275
+        }, {
+            key: "left",
+            time: 81.5
+        }, {
+            key: "down",
+            time: 81.775
+        }, {
+            key: "left",
+            time: 82.15
+        }, {
+            key: "right",
+            time: 82.55
+        }, {
+            key: "left",
+            time: 83
+        }, {
+            key: "right",
+            time: 83
+        }, {
+            key: "up",
+            time: 83.4
+        }, {
+            key: "down",
+            time: 83.4
+        }, {
+            key: "up",
+            time: 83.85
+        }, {
+            key: "down",
+            time: 84.275
+        }, {
+            key: "left",
+            time: 84.7
+        }, {
+            key: "right",
+            time: 84.7
+        }, {
+            key: "left",
+            time: 84.925
+        }, {
+            key: "right",
+            time: 84.925
+        }, {
+            key: "left",
+            time: 85.15
+        }, {
+            key: "right",
+            time: 85.15
+        }, {
+            key: "up",
+            time: 85.775
+        }, {
+            key: "down",
+            time: 86.425
+        }, {
+            key: "left",
+            time: 86.825
+        }, {
+            key: "right",
+            time: 87.05
+        }, {
+            key: "up",
+            time: 87.3
+        }, {
+            key: "down",
+            time: 87.725
+        }, {
+            key: "left",
+            time: 88.15
+        }, {
+            key: "right",
+            time: 88.375
+        }, {
+            key: "down",
+            time: 88.6
+        }, {
+            key: "up",
+            time: 89
+        }, {
+            key: "down",
+            time: 89
+        }, {
+            key: "left",
+            time: 89.65
+        }, {
+            key: "right",
+            time: 89.65
+        }, {
+            key: "up",
+            time: 89.85
+        }, {
+            key: "down",
+            time: 89.85
+        }, {
+            key: "left",
+            time: 90.15
+        }, {
+            key: "right",
+            time: 90.475
+        }, {
+            key: "up",
+            time: 90.725
+        }, {
+            key: "down",
+            time: 91.15
+        }, {
+            key: "left",
+            time: 91.575
+        }, {
+            key: "right",
+            time: 91.8
+        }, {
+            key: "down",
+            time: 92.025
+        }, {
+            key: "up",
+            time: 92.425
+        }, {
+            key: "up",
+            time: 92.65
+        }, {
+            key: "left",
+            time: 92.65
+        }, {
+            key: "down",
+            time: 93.075
+        }, {
+            key: "right",
+            time: 93.075
+        }, {
+            key: "down",
+            time: 93.3
+        }, {
+            key: "left",
+            time: 93.6
+        }, {
+            key: "right",
+            time: 93.95
+        }, {
+            key: "up",
+            time: 94.15
+        }, {
+            key: "down",
+            time: 94.575
+        }, {
+            key: "right",
+            time: 95
+        }, {
+            key: "left",
+            time: 95.225
+        }, {
+            key: "down",
+            time: 95.45
+        }, {
+            key: "up",
+            time: 95.85
+        }, {
+            key: "right",
+            time: 95.85
+        }, {
+            key: "down",
+            time: 96.275
+        }, {
+            key: "right",
+            time: 96.275
+        }, {
+            key: "left",
+            time: 96.725
+        }, {
+            key: "right",
+            time: 96.925
+        }, {
+            key: "down",
+            time: 97.15
+        }, {
+            key: "up",
+            time: 97.375
+        }, {
+            key: "up",
+            time: 97.575
+        }, {
+            key: "down",
+            time: 98
+        }, {
+            key: "left",
+            time: 98.425
+        }, {
+            key: "right",
+            time: 98.65
+        }, {
+            key: "down",
+            time: 98.875
+        }, {
+            key: "left",
+            time: 99.5
+        }, {
+            key: "right",
+            time: 99.925
+        }, {
+            key: "down",
+            time: 100.15
+        }, {
+            key: "down",
+            time: 100.575
+        }, {
+            key: "down",
+            time: 100.8
+        }, {
+            key: "up",
+            time: 101.05
+        }, {
+            key: "down",
+            time: 101.05
+        }, {
+            key: "left",
+            time: 101.05
+        }, {
+            key: "right",
+            time: 101.05
+        }]
+  
+  const laneMap = { left: 0, down: 1, up: 2, right: 3 };
+
+let chartNotes = realChart.map(n => ({
+    lane: laneMap[n.key],
+    spawnTime: n.time - 2.2, // Neal.fun offset
+    spawned: false
+}));
+
+function spawnFromChart(currentTime) {
+  for (const n of chartNotes) {
+    if (!n.spawned && currentTime >= n.spawnTime) {
+      spawnNoteInLane(n.lane);
+      n.spawned = true;
+    }
+  }
+}
+function spawnNoteInLane(laneIndex) {
+  const arrow = arrows[laneIndex];
+  const note = document.createElement("div");
+  note.className = "note";
+  note.textContent = arrow;
+
+  const keyRect = arrowKeys[laneIndex].getBoundingClientRect();
+  const gameRect = gameRoot.getBoundingClientRect();
+  const localX = keyRect.left - gameRect.left;
+
+  note.style.left = localX + "px";
+  note.style.top = "-80px";
+
+  gameRoot.appendChild(note);
+  notes.push(note);
+  totalNotes++;
+
+  setTimeout(() => {
+    if (notes.includes(note)) {
+      notes = notes.filter(n => n !== note);
+      missCount++;
+      updateHUD();
+    }
+    note.remove();
+  }, 3200);
+}
+
+let startTime = 0;
+
+function gameLoop() {
+  if (!running) return;
+
+  const now = performance.now();
+  const t = (now - startTime) / 1000;
+
+  spawnFromChart(t);
+
+  requestAnimationFrame(gameLoop);
+}
+
+  
+const gameRoot = document.getElementById("gameRoot");
+const bgVideo = document.getElementById("bgVideo");
+const bubbles = document.querySelector(".bubbles");
+const arrowKeys = document.querySelectorAll(".arrow-key");
+
+const hitCountEl = document.getElementById("hitCount");
+const missCountEl = document.getElementById("missCount");
+const accuracyTextEl = document.getElementById("accuracyText");
+
+const statsBox = document.getElementById("statsBox");
+const statsHitEl = document.getElementById("statsHit");
+const statsMissEl = document.getElementById("statsMiss");
+const statsAccuracyEl = document.getElementById("statsAccuracy");
+const restartBtn = document.getElementById("restartBtn");
+
+const arrows = ["←","↓","↑","→"];
+const keyMap = {
+  ArrowLeft: "←",
+  ArrowDown: "↓",
+  ArrowUp: "↑",
+  ArrowRight: "→"
+};
+
+let notes = [];
+let running = true;
+let hitCount = 0;
+let missCount = 0;
+let totalNotes = 0;
+
+const tolerance = 60;  // forgiving timing
+const targetYOffset = 0;
+ 
+
+/* HUD UPDATE */
+function updateHUD() {
+  hitCountEl.textContent = hitCount;
+  missCountEl.textContent = missCount;
+  const acc = (hitCount + missCount) > 0 ? Math.round((hitCount / (hitCount + missCount)) * 100) : 100;
+  accuracyTextEl.textContent = acc + "%";
+}
+
+/* SPARKLES */
+function createSparkle(x, y) {
+  for (let i = 0; i < 5; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+
+    const angle = (Math.PI * 2 * i) / 5;
+    const offsetX = Math.cos(angle) * 10;
+    const offsetY = Math.sin(angle) * 10;
+
+    s.style.left = (x + offsetX) + "px";
+    s.style.top = (y + offsetY) + "px";
+
+    gameRoot.appendChild(s);
+    setTimeout(() => s.remove(), 450);
+  }
+}
+
+/* POP ANIMATION */
+function popNote(note) {
+  note.classList.add("note-pop");
+  setTimeout(() => note.remove(), 220);
+}
+
+/* KEY FLASH */
+function flashKey(arrowChar) {
+  const index = arrows.indexOf(arrowChar);
+  if (index === -1) return;
+  const keyEl = arrowKeys[index];
+  keyEl.classList.add("active");
+  setTimeout(() => keyEl.classList.remove("active"), 120);
+}
+
+/* HIT DETECTION */
+function handleHit(arrowChar) {
+  const index = arrows.indexOf(arrowChar);
+  const targetKey = arrowKeys[index];
+  const targetRect = targetKey.getBoundingClientRect();
+  const targetY = targetRect.top + targetRect.height / 2 + targetYOffset;
+
+  let bestNote = null;
+  let bestDist = Infinity;
+
+  notes.forEach(note => {
+    if (note.textContent.trim() !== arrowChar) return;
+    const rect = note.getBoundingClientRect();
+    const noteY = rect.top + rect.height / 2;
+    const dist = Math.abs(noteY - targetY);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestNote = note;
+    }
+  });
+
+  if (bestNote && bestDist <= tolerance) {
+    hitCount++;
+    notes = notes.filter(n => n !== bestNote);
+
+    const rect = bestNote.getBoundingClientRect();
+    const gameRect = gameRoot.getBoundingClientRect();
+    createSparkle(rect.left - gameRect.left + rect.width / 2,
+                  rect.top - gameRect.top + rect.height / 2);
+
+    popNote(bestNote);
+  } else {
+    missCount++;
+  }
+
+  updateHUD();
+}
+
+/* KEYBOARD INPUT */
+document.addEventListener("keydown", e => {
+  if (!running) return;
+  const arrowChar = keyMap[e.key];
+  if (!arrowChar) return;
+  flashKey(arrowChar);
+  handleHit(arrowChar);
+});
+
+function startGame() {
+  keysPressed = {};
+  running = true;
+  hitCount = 0;
+  missCount = 0;
+  totalNotes = 0;
+  updateHUD();
+  statsBox.style.display = "none";
+
+  notes.forEach(n => n.remove());
+  notes = [];
+
+  chartNotes.forEach(n => n.spawned = false);
+
+  bgVideo.currentTime = 0;
+  bgVideo.play();
+
+  startTime = performance.now();
+  gameLoop();
+
+  stageTimer = setTimeout(endStage, 102000);
+}
+
+/* END GAME */
+function endStage() {
+  running = false;
+  clearTimeout(stageTimer);
+
+  setTimeout(() => {
+    notes.forEach(n => n.remove());
+    notes = [];
+  }, 400);
+
+  bgVideo.pause();
+
+const acc = (hitCount + missCount) > 0 ? Math.round((hitCount / (hitCount + missCount)) * 100) : 0;
+  statsHitEl.textContent = hitCount;
+  statsMissEl.textContent = missCount;
+  statsAccuracyEl.textContent = acc + "%";
+
+  statsBox.style.display = "block";
+}
+/* RESTART */
+restartBtn.addEventListener("click", startGame);
+
+/* INIT */
+startGame();
+</script>
+
+</body>
+</html>
